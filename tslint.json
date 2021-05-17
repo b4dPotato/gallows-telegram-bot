@@ -1,0 +1,29 @@
+{
+  "rules": {
+    "no-implicit-dependencies": false,
+    "typedef": false,
+    "no-any": false,
+    "no-shadowed-variable": false,
+    "no-dynamic-delete": false,
+    "no-submodule-imports": false,
+    "no-default-export": false,
+    "no-non-null-assertion": false,
+    "interface-name": false,
+    "prefer-template": false,
+    "variable-name": false,
+    "no-console": false,
+    "no-import-side-effect": false,
+    "no-relative-imports": false,
+    "no-useless-files": ["warning"]
+  },
+  "linterOptions": {
+    "exclude": ["src/locales/*.json"]
+  },
+  "extends": [
+    "tslint:recommended",
+    "tslint-eslint-rules",
+    "tslint-microsoft-contrib",
+    "tslint-consistent-codestyle",
+    "tslint-config-prettier"
+  ]
+}
