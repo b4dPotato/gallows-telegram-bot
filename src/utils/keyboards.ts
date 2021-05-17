@@ -22,31 +22,14 @@ export const getBackKeyboard = (ctx: AppContext) => {
  * @param ctx - telegram context
  */
 export const getMainKeyboard = (ctx: AppContext) => {
-  const mainKeyboardCreateProduct = ctx.i18n.t(
-    "keyboards.main_keyboard.create_product"
+  const mainKeyboardStartGame = ctx.i18n.t(
+    "keyboards.main-keyboard.start-game"
   );
-  const mainKeyboardMyCollection = ctx.i18n.t(
-    "keyboards.main_keyboard.get_products"
-  );
-  const mainKeyboardSettings = ctx.i18n.t("keyboards.main_keyboard.settings");
-  const mainKeyboardAbout = ctx.i18n.t("keyboards.main_keyboard.about");
-  const mainKeyboardSupport = ctx.i18n.t("keyboards.main_keyboard.support");
-  const mainKeyboardContact = ctx.i18n.t("keyboards.main_keyboard.contact");
-  const mainKeyboard = Markup.keyboard([
-    [mainKeyboardCreateProduct, mainKeyboardMyCollection] as any,
-    [mainKeyboardSettings, mainKeyboardAbout],
-    [mainKeyboardSupport, mainKeyboardContact],
-  ])
+  const mainKeyboard = Markup.keyboard([ mainKeyboardStartGame ])
     .resize()
     .extra();
 
   return {
     mainKeyboard,
-    mainKeyboardCreateProduct,
-    mainKeyboardMyCollection,
-    mainKeyboardSettings,
-    mainKeyboardAbout,
-    mainKeyboardSupport,
-    mainKeyboardContact,
   };
 };

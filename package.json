@@ -19,7 +19,6 @@
   "_moduleAliases": {
     "@services": "dist/services",
     "@utils": "dist/utils",
-    "@models": "dist/models",
     "@middlewares": "dist/middlewares",
     "@configs": "dist/configs",
     "@constants": "dist/constants"

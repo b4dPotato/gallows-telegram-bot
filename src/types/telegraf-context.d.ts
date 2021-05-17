@@ -5,8 +5,7 @@ interface AppContext extends Context {
   i18n: I18n;
   scene: any;
   session: {
-    language: "en" | "ru";
-    creatingProduct: boolean;
+    language: "ru";
   } & Dictionary<any>;
   webhookReply: boolean;
 }

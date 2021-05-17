@@ -1,6 +1,5 @@
 // Add some general info, like isPremium, language, etc...
 import { AppContext } from "types/telegraf-context";
-import UserModel from "../models/user";
 
 /**
  * Modifies context and add some information about the user
@@ -9,12 +8,6 @@ import UserModel from "../models/user";
  */
 export const setLanguage = async (ctx: AppContext, next: Function) => {
   if (ctx.session && !ctx.session.language) {
-    const user = await UserModel.findById(ctx.from!.id);
-
-    if (user) {
-      ctx.session.language = user.language;
-      ctx.i18n.locale(user.language);
-    }
   }
 
   return next();
