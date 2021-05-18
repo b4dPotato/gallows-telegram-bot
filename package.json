@@ -21,10 +21,12 @@
     "@utils": "dist/utils",
     "@middlewares": "dist/middlewares",
     "@configs": "dist/configs",
-    "@constants": "dist/constants"
+    "@constants": "dist/constants",
+    "@types": "dist/types"
   },
   "dependencies": {
     "async": "^3.2.0",
+    "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.2",
     "dotenv": "^6.1.0",
     "lodash": "^4.17.11",
