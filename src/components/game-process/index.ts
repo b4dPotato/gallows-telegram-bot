@@ -1,24 +1,45 @@
+import Game from '@services/game'
 import { getLetterViewerKeyboard } from './keyboards'
 import { BaseScene as Scene } from 'telegraf'
 import { AppContext } from 'types/telegraf-context'
-import { getRandomWord } from '@services/game-service'
-import path from 'path'
+import { onlyOneLetter, сyrillicRequired } from '@utils/validation'
+import { getBackKeyboard } from '@utils/keyboards'
 
 const gameProcess = new Scene<AppContext>('game-process')
+let game = new Game()
 
 gameProcess.enter(async (ctx: AppContext) => {
-  const state = ctx.scene.state
-  const randomWord = getRandomWord(state.topic)
-  console.log(randomWord)
+  const { backKeyboard } = getBackKeyboard(ctx)
+  await ctx.reply(ctx.i18n.t('scenes.start.game-description'), backKeyboard)
 
-  const imgPath = path.join(__dirname, '../../images/empty.png')
+  const state = ctx.scene.state
+  const randomWord = game.getRandomWord(state.topic)
+
   await ctx.replyWithPhoto({
-    source: imgPath
+    source: game.getAssociatedImgPath()
   })
   await ctx.reply(
     ctx.i18n.t('scenes.game-process.your-word', { n: randomWord.length }),
-    getLetterViewerKeyboard(randomWord).createLetterViewerKeyboard
+    getLetterViewerKeyboard(game.wordSkelet).createLetterViewerKeyboard
   )
+})
+
+gameProcess.on('text', async (ctx: AppContext) => {
+  const { text } = ctx.message
+  if (!сyrillicRequired(ctx, text) || !onlyOneLetter(ctx, text)) return
+  if (game.isLetterInWord(text)) {
+    game.matchWordWithLetter(text)
+    await ctx.reply(
+      ctx.i18n.t('scenes.game-process.letter-guessed', { letter: text }),
+      getLetterViewerKeyboard(game.wordSkelet).createLetterViewerKeyboard
+    )
+  } else {
+    game.attempts--
+    await ctx.reply(ctx.i18n.t('scenes.game-process.letter-not-guessed'))
+    await ctx.replyWithPhoto({
+      source: game.getAssociatedImgPath()
+    })
+  }
 })
 
 export default gameProcess
