@@ -7,6 +7,10 @@ export const TOPICS: Topics = {
   food: 'Еда'
 }
 
+/*
+  Max length of word, should not greather than 8 symbols, 
+  because telegram inline keyboard does not view more than 8 buttons in row.
+*/
 export const WORDS: Words = {
   animals: [
     'Броненосец',

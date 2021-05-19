@@ -12,13 +12,13 @@ gameProcess.enter(async (ctx: AppContext) => {
   console.log(randomWord)
 
   const imgPath = path.join(__dirname, '../../images/empty.png')
+  await ctx.replyWithPhoto({
+    source: imgPath
+  })
   await ctx.reply(
     ctx.i18n.t('scenes.game-process.your-word', { n: randomWord.length }),
     getLetterViewerKeyboard(randomWord).createLetterViewerKeyboard
   )
-  await ctx.replyWithPhoto({
-    source: imgPath
-  })
 })
 
 export default gameProcess
