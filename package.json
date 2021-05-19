@@ -22,7 +22,8 @@
     "@middlewares": "dist/middlewares",
     "@configs": "dist/configs",
     "@constants": "dist/constants",
-    "@types": "dist/types"
+    "@types": "dist/types",
+    "@images": "src/images"
   },
   "dependencies": {
     "async": "^3.2.0",

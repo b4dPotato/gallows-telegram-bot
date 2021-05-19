@@ -14,6 +14,7 @@ import telegramConfig from '@configs/telegram'
 
 import startScene from './components/start'
 import gameStartScene from './components/game-start'
+import gameProcessScene from './components/game-process'
 
 import asyncWrapper from './utils/error-handler'
 import { getMainKeyboard } from './utils/keyboards'
@@ -25,7 +26,7 @@ import { AppContext } from 'types/telegraf-context'
 import Telegram from './telegram'
 
 const bot = new Telegraf<AppContext>(telegramConfig.BOT_TOKEN)
-const stage = new Stage([startScene, gameStartScene])
+const stage = new Stage([startScene, gameStartScene, gameProcessScene])
 const i18n = new TelegrafI18n({
   defaultLanguage: 'en',
   directory: path.resolve(`${__dirname}/locales`),
@@ -33,6 +34,8 @@ const i18n = new TelegrafI18n({
   allowMissing: false,
   sessionName: 'session'
 })
+
+console.log(bot)
 
 bot.use(session())
 bot.use(i18n.middleware())
