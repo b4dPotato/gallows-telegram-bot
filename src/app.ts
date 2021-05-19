@@ -20,8 +20,6 @@ import asyncWrapper from './utils/error-handler'
 import { getMainKeyboard } from './utils/keyboards'
 import logger from './utils/logger'
 
-import { setLanguage } from './middlewares/set-language'
-
 import { AppContext } from 'types/telegraf-context'
 import Telegram from './telegram'
 
@@ -40,7 +38,6 @@ console.log(bot)
 bot.use(session())
 bot.use(i18n.middleware())
 bot.use(stage.middleware())
-bot.use(setLanguage)
 
 bot.command('saveme', async (ctx: AppContext) => {
   logger.debug(ctx, 'User uses /saveme command')

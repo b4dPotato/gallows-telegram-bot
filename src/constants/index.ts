@@ -1,4 +1,5 @@
-import { Topics } from 'types/topic'
+import { Topics } from 'types/topics'
+import { Words } from 'types/words'
 
 export const TOPICS: Topics = {
   animals: 'Животные',
@@ -6,7 +7,7 @@ export const TOPICS: Topics = {
   food: 'Еда'
 }
 
-export const WORDS = {
+export const WORDS: Words = {
   animals: [
     'Броненосец',
     'Альпака',
@@ -14,15 +15,10 @@ export const WORDS = {
     'Большая панда',
     'Вомбат',
     'Фенек',
-    'Морская свинка',
     'Сурикат',
     'Квокка',
-    'Летучая лисица',
     'Ленивец',
-    'Кошачий лемур',
-    'Короткоухий слоновый прыгунчик',
     'Коала',
-    'Малая панда',
     'Калан',
     'Кошка',
     'Собака',

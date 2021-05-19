@@ -1,17 +1,21 @@
-import { getChooseTopicKeyboard } from './keyboards'
+import { getLetterViewerKeyboard } from './keyboards'
 import { BaseScene as Scene } from 'telegraf'
 import { AppContext } from 'types/telegraf-context'
-import { SET_TOPIC, handleTopicSet } from './actions'
-import { TOPICS } from '@constants/index'
+import { getRandomWord } from '@services/game-service'
 import path from 'path'
 
 const gameProcess = new Scene<AppContext>('game-process')
 
 gameProcess.enter(async (ctx: AppContext) => {
-  console.log(ctx.scene.state)
-  const imgPath = path.join(__dirname, '../../images/hangman-0.png')
+  const state = ctx.scene.state
+  const randomWord = getRandomWord(state.topic)
+  console.log(randomWord)
 
-  await ctx.reply(ctx.i18n.t('scenes.game-process.your-word', { n: 5 }))
+  const imgPath = path.join(__dirname, '../../images/empty.png')
+  await ctx.reply(
+    ctx.i18n.t('scenes.game-process.your-word', { n: randomWord.length }),
+    getLetterViewerKeyboard(randomWord).createLetterViewerKeyboard
+  )
   await ctx.replyWithPhoto({
     source: imgPath
   })

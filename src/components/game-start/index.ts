@@ -6,10 +6,7 @@ import { SET_TOPIC, handleTopicSet } from './actions'
 const gameStart = new Scene<AppContext>('game-start')
 
 gameStart.enter(async (ctx: AppContext) => {
-  await ctx.reply(
-    ctx.i18n.t('scenes.game-start.choose-topic'),
-    getChooseTopicKeyboard().createGetProductsInlineBodyKeyboard
-  )
+  await ctx.reply(ctx.i18n.t('scenes.game-start.choose-topic'), getChooseTopicKeyboard().createChooseTopicKeyboard)
 })
 
 gameStart.action(RegExp(SET_TOPIC), handleTopicSet)

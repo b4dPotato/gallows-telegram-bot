@@ -1,14 +1,12 @@
 import { Markup } from 'telegraf'
-import { TOPICS } from '@constants/index'
-import { createSetTopic } from './actions'
 
-export const getChooseTopicKeyboard = () => {
-  const inlineKeyboardBody = [
-    ...Object.keys(TOPICS).map((key: string) => [Markup.callbackButton(TOPICS[key], createSetTopic(key))])
-  ]
-  const createGetProductsInlineBodyKeyboard = Markup.inlineKeyboard(inlineKeyboardBody).resize().extra()
+export const getLetterViewerKeyboard = (word: String) => {
+  const NO_ACTION = '__NO_ACTION__'
+
+  const inlineKeyboard = [word.split('').map((letter: string) => Markup.callbackButton(letter, NO_ACTION))]
+  const createLetterViewerKeyboard = Markup.inlineKeyboard(inlineKeyboard).resize().extra()
 
   return {
-    createGetProductsInlineBodyKeyboard
+    createLetterViewerKeyboard
   }
 }
