@@ -1,6 +1,7 @@
 import { WORDS } from '@constants/index'
 import { getLetterViewerKeyboard } from '@utils/keyboards'
 import { getMainKeyboard } from '@utils/keyboards'
+import logger from '@utils/logger'
 
 import { AppContext } from 'types/telegraf-context'
 import path from 'path'
@@ -29,7 +30,6 @@ export default class Game {
 
     let word = this.getRandomWord(topic)
     this.initWord(word)
-    console.log(word)
     await ctx.replyWithPhoto({
       source: this.getAssociatedImgPath()
     })
@@ -39,21 +39,18 @@ export default class Game {
     )
   }
 
-  async tryPutLetter(ctx: AppContext, text: string) {
-    if (this.letters.includes(text)) {
+  async tryPutLetter(letter: string) {
+    const ctx = this.ctx
+
+    if (this.letters.includes(letter.toLowerCase())) {
       await ctx.reply(ctx.i18n.t('game.letter-duplicated', { letters: this.letters }))
       return
     }
 
-    console.log('===================== DEBUG =====================')
-    console.log(this.letters)
-    console.log(ctx.chat?.username)
-    console.log('===================== DEBUG =====================')
-
-    if (this.isLetterInWord(text)) {
-      this.matchWordWithLetter(text)
+    if (this.isLetterInWord(letter)) {
+      this.matchWordWithLetter(letter)
       await ctx.reply(
-        ctx.i18n.t('game.letter-guessed', { letter: text }),
+        ctx.i18n.t('game.letter-guessed', { letter }),
         getLetterViewerKeyboard(this.wordSkelet).createLetterViewerKeyboard
       )
       if (!this.wordSkelet.includes('-')) {
@@ -75,6 +72,11 @@ export default class Game {
         this.gameOver()
       }
     }
+
+    logger.debug(
+      ctx,
+      `Word: ${this.word} / Attempts: ${this.attempts} / Username: ${ctx.chat?.username!} / Letters: ${this.letters}`
+    )
   }
 
   async gameWon() {
@@ -84,6 +86,7 @@ export default class Game {
     this.isGameProcess = false
     await ctx.reply(ctx.i18n.t('game.game-win'))
     await ctx.reply(ctx.i18n.t('keyboards.back-keyboard.end-game'), mainKeyboard)
+    logger.debug(ctx, `${ctx.chat?.username} has won!`)
   }
 
   async gameOver() {
@@ -94,6 +97,7 @@ export default class Game {
       source: path.join(__dirname, `../images/game-over.png`)
     })
     await ctx.reply(ctx.i18n.t('game.game-over'), getLetterViewerKeyboard(this.word).createLetterViewerKeyboard)
+    logger.debug(ctx, `${ctx.chat?.username} has loose!`)
   }
 
   initWord(word: string) {

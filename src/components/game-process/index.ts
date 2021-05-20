@@ -41,7 +41,7 @@ gameProcess.on('text', async (ctx: AppContext) => {
   const valid = (await сyrillicRequired(ctx, text)) && (await onlyOneLetter(ctx, text))
   if (!valid) return
 
-  await game.tryPutLetter(ctx, text)
+  await game.tryPutLetter(text)
   if (!game.isGameProcess) {
     await ctx.scene.leave()
   }
