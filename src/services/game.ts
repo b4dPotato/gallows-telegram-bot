@@ -117,6 +117,7 @@ export default class Game {
   }
 
   matchWordWithLetter(letter: string) {
+    letter = letter.toLowerCase()
     this.wordSkelet = this.word
       .toLowerCase()
       .split('')
