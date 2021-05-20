@@ -1,44 +1,39 @@
 import Game from '@services/game'
-import { getLetterViewerKeyboard } from './keyboards'
 import { BaseScene as Scene } from 'telegraf'
 import { AppContext } from 'types/telegraf-context'
 import { onlyOneLetter, сyrillicRequired } from '@utils/validation'
-import { getBackKeyboard } from '@utils/keyboards'
+import { getBackKeyboard, getMainKeyboard } from '@utils/keyboards'
+import { match } from 'telegraf-i18n'
+import asyncWrapper from '@utils/error-handler'
 
 const gameProcess = new Scene<AppContext>('game-process')
-let game = new Game()
+let game: Game
 
 gameProcess.enter(async (ctx: AppContext) => {
+  game = new Game(ctx)
   const { backKeyboard } = getBackKeyboard(ctx)
   await ctx.reply(ctx.i18n.t('scenes.start.game-description'), backKeyboard)
 
   const state = ctx.scene.state
-  const randomWord = game.getRandomWord(state.topic)
-
-  await ctx.replyWithPhoto({
-    source: game.getAssociatedImgPath()
-  })
-  await ctx.reply(
-    ctx.i18n.t('scenes.game-process.your-word', { n: randomWord.length }),
-    getLetterViewerKeyboard(game.wordSkelet).createLetterViewerKeyboard
-  )
+  game.startGame(ctx, state.topic)
 })
 
+gameProcess.hears(
+  match('keyboards.back-keyboard.back'),
+  asyncWrapper(async (ctx: AppContext) => {
+    ctx.scene.leave()
+    const { mainKeyboard } = getMainKeyboard(ctx)
+    await ctx.reply(ctx.i18n.t('keyboards.back-keyboard.end-game'), mainKeyboard)
+  })
+)
+
 gameProcess.on('text', async (ctx: AppContext) => {
-  const { text } = ctx.message
-  if (!сyrillicRequired(ctx, text) || !onlyOneLetter(ctx, text)) return
-  if (game.isLetterInWord(text)) {
-    game.matchWordWithLetter(text)
-    await ctx.reply(
-      ctx.i18n.t('scenes.game-process.letter-guessed', { letter: text }),
-      getLetterViewerKeyboard(game.wordSkelet).createLetterViewerKeyboard
-    )
-  } else {
-    game.attempts--
-    await ctx.reply(ctx.i18n.t('scenes.game-process.letter-not-guessed'))
-    await ctx.replyWithPhoto({
-      source: game.getAssociatedImgPath()
-    })
+  const text = ctx.message?.text!
+  const valid = (await сyrillicRequired(ctx, text)) && (await onlyOneLetter(ctx, text))
+  if (!valid) return
+  await game.tryPutLetter(text)
+  if (!game.isGameProcess) {
+    await ctx.scene.leave()
   }
 })
 
