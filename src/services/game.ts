@@ -24,8 +24,8 @@ export default class Game {
     this.isGameProcess = true
   }
 
-  async startGame(ctx: AppContext, topic: string) {
-    this.ctx = ctx
+  async startGame(topic: string) {
+    const ctx = this.ctx
 
     let word = this.getRandomWord(topic)
     this.initWord(word)
@@ -39,13 +39,16 @@ export default class Game {
     )
   }
 
-  async tryPutLetter(text: string) {
-    const ctx = this.ctx
-
+  async tryPutLetter(ctx: AppContext, text: string) {
     if (this.letters.includes(text)) {
       await ctx.reply(ctx.i18n.t('game.letter-duplicated', { letters: this.letters }))
       return
     }
+
+    console.log('===================== DEBUG =====================')
+    console.log(this.letters)
+    console.log(ctx.chat?.username)
+    console.log('===================== DEBUG =====================')
 
     if (this.isLetterInWord(text)) {
       this.matchWordWithLetter(text)

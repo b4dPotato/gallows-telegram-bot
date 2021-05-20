@@ -5,19 +5,27 @@ import { AppContext } from 'types/telegraf-context'
 import { onlyOneLetter, сyrillicRequired } from '@utils/validation'
 import { getBackKeyboard, getMainKeyboard } from '@utils/keyboards'
 import asyncWrapper from '@utils/error-handler'
+// NEED REFACTOR
 
 import Game from '@services/game'
+import User from '@services/user'
 
 const gameProcess = new Scene<AppContext>('game-process')
-let game: Game
+let users: Array<User> = []
 
 gameProcess.enter(async (ctx: AppContext) => {
-  game = new Game(ctx)
+  let user = users.find(user => ctx.chat?.id === user.id)
+  if (!user) {
+    let game = new Game(ctx)
+    user = new User(game, ctx.chat?.id)
+    users.push(user)
+  }
+
   const { backKeyboard } = getBackKeyboard(ctx)
   await ctx.reply(ctx.i18n.t('scenes.start.game-description'), backKeyboard)
 
   const state = ctx.scene.state
-  game.startGame(ctx, state.topic)
+  user.game.startGame(state.topic)
 })
 
 gameProcess.start(async (ctx: AppContext) => {
@@ -37,9 +45,11 @@ gameProcess.hears(
 gameProcess.on('text', async (ctx: AppContext) => {
   const text = ctx.message?.text!
   const valid = (await сyrillicRequired(ctx, text)) && (await onlyOneLetter(ctx, text))
-  if (!valid) return
-  await game.tryPutLetter(text)
-  if (!game.isGameProcess) {
+  let user = users.find(user => ctx.chat?.id === user.id)
+  if (!valid || !user) return
+
+  await user.game.tryPutLetter(ctx, text)
+  if (!user.game.isGameProcess) {
     await ctx.scene.leave()
   }
 })
