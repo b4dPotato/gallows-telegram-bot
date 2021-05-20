@@ -20,6 +20,11 @@ gameProcess.enter(async (ctx: AppContext) => {
   game.startGame(ctx, state.topic)
 })
 
+gameProcess.start(async (ctx: AppContext) => {
+  await ctx.scene.leave()
+  await ctx.scene.enter('start')
+})
+
 gameProcess.hears(
   match('keyboards.back-keyboard.back'),
   asyncWrapper(async (ctx: AppContext) => {

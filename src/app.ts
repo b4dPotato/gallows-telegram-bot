@@ -26,7 +26,7 @@ import Telegram from './telegram'
 const bot = new Telegraf<AppContext>(telegramConfig.BOT_TOKEN)
 const stage = new Stage([startScene, gameStartScene, gameProcessScene])
 const i18n = new TelegrafI18n({
-  defaultLanguage: 'en',
+  defaultLanguage: 'ru',
   directory: path.resolve(`${__dirname}/locales`),
   useSession: true,
   allowMissing: false,

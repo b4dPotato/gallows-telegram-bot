@@ -1,8 +1,8 @@
 {
   "name": "telegram-bot",
   "version": "0.2.1",
-  "description": "With this bot you won't skip the moment when your favorite movies are available on the torrents!",
-  "author": "Dmitrii Baranov",
+  "description": "Simple game",
+  "author": "Kolesnyk Eduard",
   "scripts": {
     "start": "npm run watch-debug",
     "build": "npm run build-ts && npm run tslint",
