@@ -1,7 +1,6 @@
 import { getMainKeyboard } from '@utils/keyboards'
 import { BaseScene as Scene } from 'telegraf'
 import { AppContext } from 'types/telegraf-context'
-// NEED REFACTOR
 const start = new Scene<AppContext>('start')
 
 start.enter(async (ctx: AppContext) => {
