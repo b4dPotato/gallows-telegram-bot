@@ -84,6 +84,10 @@ export default class Game {
     const { mainKeyboard } = getMainKeyboard(ctx)
     this.isGameWon = true
     this.isGameProcess = false
+
+    await ctx.replyWithPhoto({
+      source: path.join(__dirname, `../images/game-won.png`)
+    })
     await ctx.reply(ctx.i18n.t('game.game-win'))
     await ctx.reply(ctx.i18n.t('keyboards.back-keyboard.end-game'), mainKeyboard)
     logger.debug(ctx, `${ctx.chat?.username} has won!`)
@@ -93,6 +97,7 @@ export default class Game {
     const ctx = this.ctx
     this.isGameWon = false
     this.isGameProcess = false
+
     await ctx.replyWithPhoto({
       source: path.join(__dirname, `../images/game-over.png`)
     })
