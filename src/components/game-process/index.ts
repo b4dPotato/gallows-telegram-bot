@@ -1,10 +1,12 @@
-import Game from '@services/game'
 import { BaseScene as Scene } from 'telegraf'
+import { match } from 'telegraf-i18n'
 import { AppContext } from 'types/telegraf-context'
+
 import { onlyOneLetter, сyrillicRequired } from '@utils/validation'
 import { getBackKeyboard, getMainKeyboard } from '@utils/keyboards'
-import { match } from 'telegraf-i18n'
 import asyncWrapper from '@utils/error-handler'
+
+import Game from '@services/game'
 
 const gameProcess = new Scene<AppContext>('game-process')
 let game: Game

@@ -1,5 +1,5 @@
-import { AppContext } from "types/telegraf-context";
-import logger from "./logger";
+import { AppContext } from 'types/telegraf-context'
+import logger from './logger'
 
 /**
  * Wrapper to catch async errors within a stage. Helps to avoid try catch blocks in there
@@ -8,14 +8,14 @@ import logger from "./logger";
 const asyncWrapper = (fn: Function) => {
   return async function (ctx: AppContext, next: Function) {
     try {
-      return await fn(ctx);
+      return await fn(ctx)
     } catch (error) {
-      logger.error(ctx, "asyncWrapper error, %O", error);
-      await ctx.reply(ctx.i18n.t("shared.something_went_wrong"));
+      logger.error(ctx, 'asyncWrapper error, %O', error)
+      await ctx.reply(ctx.i18n.t('shared.something-went-wrong'))
 
-      return next();
+      return next()
     }
-  };
-};
+  }
+}
 
-export default asyncWrapper;
+export default asyncWrapper

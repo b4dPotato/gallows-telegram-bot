@@ -19,11 +19,9 @@
   "_moduleAliases": {
     "@services": "dist/services",
     "@utils": "dist/utils",
-    "@middlewares": "dist/middlewares",
     "@configs": "dist/configs",
     "@constants": "dist/constants",
-    "@types": "dist/types",
-    "@images": "src/images"
+    "@types": "dist/types"
   },
   "dependencies": {
     "async": "^3.2.0",

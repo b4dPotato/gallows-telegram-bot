@@ -46,7 +46,6 @@
     "paths": {
       "@services/*": ["services/*"],
       "@utils/*": ["utils/*"],
-      "@middlewares/*": ["middlewares/*"],
       "@configs/*": ["configs/*"],
       "@constants/*": ["constants/*"],
       "@types/*": ["types/*"]

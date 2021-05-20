@@ -5,7 +5,7 @@ dotenv.config()
 import fs from 'fs'
 import path from 'path'
 import rp from 'request-promise'
-import Telegraf, { Context, Extra, Markup } from 'telegraf'
+import Telegraf from 'telegraf'
 import session from 'telegraf/session'
 import TelegrafI18n, { match } from 'telegraf-i18n'
 import Stage from 'telegraf/stage'
@@ -33,18 +33,9 @@ const i18n = new TelegrafI18n({
   sessionName: 'session'
 })
 
-console.log(bot)
-
 bot.use(session())
 bot.use(i18n.middleware())
 bot.use(stage.middleware())
-
-bot.command('saveme', async (ctx: AppContext) => {
-  logger.debug(ctx, 'User uses /saveme command')
-
-  const { mainKeyboard } = getMainKeyboard(ctx)
-  await ctx.reply(ctx.i18n.t('shared.what_next'), mainKeyboard)
-})
 
 bot.start(asyncWrapper(async (ctx: AppContext) => ctx.scene.enter('start')))
 
@@ -57,7 +48,7 @@ bot.hears(/(.*?)/, async (ctx: AppContext) => {
   logger.debug(ctx, 'Default handler has fired')
 
   const { mainKeyboard } = getMainKeyboard(ctx)
-  await ctx.reply(ctx.i18n.t('other.default_handler'), mainKeyboard)
+  await ctx.reply(ctx.i18n.t('other.default-handler'), mainKeyboard)
 })
 
 bot.catch((error: any) => {
